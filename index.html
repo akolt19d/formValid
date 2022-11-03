@@ -5,28 +5,82 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formularz</title>
+
+    <style>
+        * 
+        {
+            margin: 0;
+            padding: 0;
+        }
+        body 
+        {
+            background-color: rgb(17,17,17)
+        }
+        #wrapper 
+        {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        form 
+        {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        form * 
+        {
+            margin: 10px 0;
+        }
+        form :is(input, textarea, button)
+        {
+            padding: 8px;
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            border-radius: 6px;
+        }
+        form button 
+        {
+            background-color: white;
+            color: black;
+            cursor: pointer;
+        }
+        #error 
+        {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            font-size: 200%;
+            color: white;
+        }
+    </style>
 </head>
 <body>
     <div id="wrapper">
         <form action="index.html">
-            <input type="text" id="name" required value="Pikuś Moczuś">
-            <input type="number" id="age" value="18">
+            <input type="text" id="name" required>
+            <input type="number" id="age">
             <input type="email" id="email" required>
             <input type="number" id="pesel" required>
             <select id="gender" required>
-                <option value="M">Mężczyzna</option>
-                <option value="F">Kobieta</option>
+                <option value="1">Mężczyzna</option>
+                <option value="0">Kobieta</option>
             </select>
             <input type="tel" id="phone" pattern="[+][0-9]{11}" maxlength="12" required>
-            <input type="text" id="class">
+            <input type="text" id="class" maxlength="2">
             <input type="text" id="title" required>
             <input type="text" id="publisher" required>
             <input type="number" id="ISBN" required>
-            <input type="number" id="ev" required>
+            <input type="text" id="ev" required maxlength="11">
             <textarea id="message" cols="30" rows="10"></textarea>
             <button type="submit">Wyślij</button>
         </form>
     </div>
+    <div id="error"></div>
     <script defer src="valid.js"></script>
 </body>
 </html>

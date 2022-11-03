@@ -1,60 +1,103 @@
 const inputs = Array.from(document.querySelectorAll(":is(input, select, textarea)"));
 const form = document.querySelector("form")
+const errorDiv = document.querySelector("#error")
 console.log(inputs.map(x => x.id))
 
 function isBetween(start, end, value) {
     return (start <= value && value <= end);
 }
 
-const validFunctions = {
-    1: (value) => (!isNaN(value) && Number(value) <= 150 && Number(value) > 0),
-    3: (pesel) => {
-        const age = Number(document.querySelector("#age").value)
-        const year = new Date().getFullYear() - age;
-        // const 
-        let addOn = 0;
-        const ranges = [
-            {
-                range: [1800, 1899],
-                add: 80
-            },
-            {
-                range: [2000, 2099],
-                add: 20
-            },
-            {
-                range: [2100, 2199],
-                add: 40
-            },
-            {
-                range: [2200, 2299],
-                add: 60
-            },
-            {
-                range: [1900, 1999],
-                add: 0
-            }
-        ]
 
-        ranges.forEach(x => {
-            if(isBetween(x.range[0], x.range[1], year))
-            {
-                addOn = x.add;
-            }
-        })
-
-
-
-        console.log(year, addOn, isBetween(2000, 2099, year))
-    }
-}
-
-validFunctions[3]("03310607376");
 function validateForm() {
+    const validFunctions = {
+        1: (value) => (!isNaN(value) && Number(value) <= 150 && Number(value) > 0),
+        3: (pesel) => {
+            const age = Number(document.querySelector("#age").value)
+            const year = new Date().getFullYear() - age;
+            const peselMonth = pesel.slice(2, 4)
+            const gender = Number(document.querySelector("#gender").value)
+            const peselGender = pesel.slice(-2, -1)
+            const weights = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3, 1]
+            let addOn = 0;
+            const ranges = [
+                {
+                    range: [1800, 1899],
+                    add: 80
+                },
+                {
+                    range: [2000, 2099],
+                    add: 20
+                },
+                {
+                    range: [2100, 2199],
+                    add: 40
+                },
+                {
+                    range: [2200, 2299],
+                    add: 60
+                },
+                {
+                    range: [1900, 1999],
+                    add: 0
+                }
+            ]
+    
+            ranges.forEach(x => {
+                if(isBetween(x.range[0], x.range[1], year))
+                    addOn = x.add;
+            })
+            
+            let birthMonth = Number(peselMonth) - addOn
+            
+            if(!(birthMonth >= 1 && birthMonth <= 12))
+            return false;
+            
+            if(!(peselGender % 2 == gender))
+            return false;
+            
+            let sum = 0;
+            pesel.split("").map(x => Number(x)).forEach((num, i) => {
+                sum += num * weights[i]
+            })
+            
+            if(!(String(sum)[String(sum).length - 1] == "0"))
+                return false;
+    
+            return true;
+        },
+        6: (value) => {
+            value = value.toLowerCase();
+            const regex = /[\d]{1}[a-z]{1}/g
+            if(regex.test(value))
+                return true
+            else return false
+        },
+        10: (value) => {
+            const regex = /[\d]{6}[\\]{1}[\d]{4}/g
+            if(regex.test(value))
+                return true
+            else return false
+        },
+    }
+    
+    let flags = [];
+    
+    inputs.forEach((input, i) => {
+        if(validFunctions[i])
+            flags.push(validFunctions[i](input.value))
+    })
+    
+    console.log(flags)
+    if(flags[0] && flags[1] && flags[2] && flags[3])
+        return true
+    else return false
 }
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
-    validateForm();
+    if(validateForm())
+        error.innerHTML = "Formularz poprawny"
+    else 
+        error.innerHTML = "Formularz błędny"
 })
 
