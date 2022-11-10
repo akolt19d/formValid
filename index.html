@@ -19,7 +19,7 @@
         #wrapper 
         {
             width: 100vw;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -54,7 +54,7 @@
             position: absolute;
             left: 20px;
             top: 20px;
-            font-size: 200%;
+            font-size: 100%;
             color: white;
         }
     </style>
@@ -62,21 +62,21 @@
 <body>
     <div id="wrapper">
         <form action="index.html">
-            <input type="text" id="name" required>
-            <input type="number" id="age">
-            <input type="email" id="email" required>
-            <input type="number" id="pesel" required>
+            <input type="text" id="name" required placeholder="Imie i nazwisko">
+            <input type="number" id="age" placeholder="Wiek">
+            <input type="email" id="email" required placeholder="E-mail">
+            <input type="number" id="pesel" required placeholder="PESEL">
             <select id="gender" required>
                 <option value="1">Mężczyzna</option>
                 <option value="0">Kobieta</option>
             </select>
-            <input type="tel" id="phone" pattern="[+][0-9]{11}" maxlength="12" required>
-            <input type="text" id="class" maxlength="2">
-            <input type="text" id="title" required>
-            <input type="text" id="publisher" required>
-            <input type="number" id="ISBN" required>
-            <input type="text" id="ev" required maxlength="11">
-            <textarea id="message" cols="30" rows="10"></textarea>
+            <input type="tel" id="phone" pattern="[+][0-9]{11}" maxlength="12" required placeholder="Numer telefonu">
+            <input type="text" id="class" maxlength="2" placeholder="Klasa">
+            <input type="text" id="title" required placeholder="Tytuł">
+            <input type="text" id="publisher" required placeholder="Wydawca">
+            <input type="number" id="ISBN" required placeholder="ISBN">
+            <input type="text" id="ev" required maxlength="11" placeholder="Numer ewidencyjny">
+            <textarea id="message" cols="30" rows="10" placeholder="Napisz coś..."></textarea>
             <button type="submit">Wyślij</button>
         </form>
     </div>

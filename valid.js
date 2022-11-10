@@ -1,12 +1,12 @@
 const inputs = Array.from(document.querySelectorAll(":is(input, select, textarea)"));
 const form = document.querySelector("form")
 const errorDiv = document.querySelector("#error")
-console.log(inputs.map(x => x.id))
 
 function isBetween(start, end, value) {
     return (start <= value && value <= end);
 }
 
+let errorIndex = 0;
 
 function validateForm() {
     const validFunctions = {
@@ -80,24 +80,32 @@ function validateForm() {
         },
     }
     
-    let flags = [];
+    let flags = {};
     
     inputs.forEach((input, i) => {
         if(validFunctions[i])
-            flags.push(validFunctions[i](input.value))
+            flags[i] = validFunctions[i](input.value)
     })
     
-    console.log(flags)
-    if(flags[0] && flags[1] && flags[2] && flags[3])
-        return true
-    else return false
+    let fin = true;
+    Object.entries(flags).forEach(entry => {
+        if(!entry[1])
+        {
+            errorIndex = errorIndex == 0 ? Number(entry[0]) : errorIndex
+            fin = false
+        }
+    })
+
+    return fin
 }
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
     if(validateForm())
         error.innerHTML = "Formularz poprawny"
-    else 
-        error.innerHTML = "Formularz błędny"
+    else {
+        error.innerHTML = `Formularz błędny.<br>Błąd w podanym polu: ${inputs[errorIndex].placeholder}`
+        errorIndex = 0;
+    }
 })
 
